@@ -1,15 +1,15 @@
 # toolbox
 This is place for miscellaneous, general purpose code. 
 
-## utilities
+### utilities
 Generally useful bits of python. The code is organized into modules according to problem domain, but everything is available with a top-level package import.
 
-## constants
+### constants
 Physical constants, important scales, and unit conversions. 
 
-## plotting
+### plotting
 This packing contains general-use routines and classes for plotting,
 built primarily out of matplotlib.
 
-## fitting
+### fitting
 Common data fitting operations 
