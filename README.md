@@ -1,5 +1,5 @@
 # toolbox
-miscellaneous useful bits of code 
+This is place for miscellaneous, general purpose code. 
 
 ## utilities
 Generally useful bits of python. The code is organized into modules according to problem domain, but everything is available with a top-level package import.
