@@ -47,15 +47,3 @@ def polar_box(rad_min, rad_max, ang_min, ang_max, **kwargs):
     minarc_coords.reverse()
     poly = geo.Polygon(maxarc_coords + minarc_coords)
     return desc.PolygonPatch(poly, **kwargs)
-
-# TO DO: move this to a more appropriate module, maybe in utilities?
-# def approxArc(center, radius, thmin, thmax, resolution=24):
-#     # returns a shapely LineString approximating an arc
-#     total_delta_angle = thmax - thmin
-#     number_of_samples = int(sp.ceil(resolution*4*abs(total_delta_angle)/360)) + 1
-#         # number_of_samples always >= 1
-#     sample_angles = sp.linspace(thmin, thmax, number_of_samples)
-#     x = center[0] + radius*cosdg(sample_angles)
-#     y = center[1] + radius*sindg(sample_angles)
-#     sample_points = [(x[n], y[n]) for n in range(number_of_samples)]
-#     return geo.LineString(sample_points)

@@ -1,4 +1,4 @@
-"""Module for plotting a scalar field with spacial discretization."""
+""" Module for plotting a scalar field with spacial discretization. """
 
 
 import numpy as np

@@ -4,8 +4,8 @@
 import numpy as np
 import matplotlib.pyplot as mplt
 
-import utilities as utl 
-import plotting.basic_shapes as shapes
+import toolbox.computation as comp 
+import toolbox.plotting.shapes as shapes
 
 
 def test_rotate2d(trials, width, angles):
@@ -19,7 +19,7 @@ def test_rotate2d(trials, width, angles):
 	points_shape.append(2)
 	points = np.full(points_shape, np.nan)
 	points[..., 0], points[..., 1] = x, y
-	rotated = utl.rotate2d(points, np.deg2rad(angles), form='cart')
+	rotated = comp.rotate2d(points, np.deg2rad(angles), form='cart')
 	points2d = np.array([x.flatten(), y.flatten()]).T
 	xrot_flat = rotated[..., 0].flatten()
 	yrot_flat = rotated[..., 1].flatten()

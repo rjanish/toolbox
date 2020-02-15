@@ -1,5 +1,6 @@
 """
-Physical constants, scales, and unit conversions. 
+physical constants, scales, and unit conversions 
 """
 
-from constants import *
+
+from .constants import *

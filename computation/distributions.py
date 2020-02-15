@@ -3,7 +3,7 @@
 
 import numpy as np
 
-from utilities.local_warnings import warn_untested
+from toolbox.utilities import warn_untested
 
 
 def gaussian(x, mu, sigma):

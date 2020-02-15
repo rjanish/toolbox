@@ -1,6 +1,6 @@
 """
-This package has routines for common data fitting tasks.
+data fitting routines
 """
 
 
-from series import *
+from .series import *
