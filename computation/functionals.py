@@ -5,6 +5,8 @@ import numpy as np
 import scipy.interpolate as interp
 import scipy.optimize as opt
 
+from toolbox.utilities import warn_untested
+
 
 def interp1d_constextrap(*args, **kwargs):
     """
@@ -56,3 +58,57 @@ def find_local_min(func, interval, atol=10**-7):
     if np.isclose(out['x'], interval, atol=atol).any():
         return None
     return [out['x'], out['fun']]
+
+
+@warn_untested
+def track_period(x, y, frequency_guess, padding_factor=10):
+    """ 
+    Given data y(x) which has the form of an oscillation with a slow
+    frequency modulation, extract the frequency evolution $\omega(x)$.
+    This uses *angular frequency*, so the period is 2\pi/frequency.
+
+    This begins with an initial guess for the frequency omega0 and an 
+    initial data pair x0, y0, then steps to $x1 = x0 + 2\pi/omega0$. It 
+    expects to find near x1 a recurrence of the value y0, and solves 
+    y0 = y(x1 + delta) for small $\delta$ to find the true period T0. 
+    It then continues with the just-computed period T0 as the guess 
+    used to search for the next recurrence of y0 to find T1, and so on. 
+
+    x, y - 1D ndarrays of the same length
+    frequency_guess - float
+      This is a guess for the initial angular frequency, $\omega(x[0])$
+    padding - float
+      Something 
+
+    Returns an array of sample points xn (not necessarily the same as 
+    were passed) and the frequency computed at those points \omega(xn).
+    """
+    x, y = np.asarray(x), np.asarray(y)
+    period_guess = 2*np.pi/frequency_guess
+    ytarget = y[0]
+    xrecur_guess = x[0] + period_guess
+    xrecur_previous = x[0]
+    times, periods = [], [] 
+    while xrecur_guess < x[-1]:
+        # Find the x values immediately to the right and left of the 
+        # expected recurrence point, and fit a line between these points. 
+        # Solve for the true recurrence using this linear approximation.
+        xleft = np.max(x[x < xrecur_guess])
+        xleft_subindex = np.argmax(xleft)
+        xright = np.min(x[x > xrecur_guess])
+        xright_subindex = np.argmax(xright)
+        yleft = y[x < xrecur_guess][xleft_subindex]
+        yright = y[x > xrecur_guess][xright_subindex]
+        xrecur = xleft + (ytarget - yleft)*(xright - xleft)/(yright - yleft)
+        periods.append(xrecur - xrecur_previous)
+        times.append((xrecur + xrecur_previous)*0.5)
+        xrecur_guess = xrecur + periods[-1]
+        xrecur_previous = xrecur
+    # better idea: (?)
+    # start with x[1], and compute z = y - y[1]. Every zero of z is a 
+    # possible recurrence spot, and y either has a positive or negative
+    # slope there. Find all x where z(x) = 0 and z_slope(x) = z_slope[1],
+    # these are the recurrences x_recur and they give the periods. 
+    # Repeat starting with x[2], up to x_recur[0] to get a finer sample.
+    frequencies = 2*np.pi/np.asarray(period)    
+    return np.asarray(times), frequencies
